@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HapticGloveConnector", "HapticGloveConnector\HapticGloveConnector.csproj", "{4254B6D0-6A00-44A0-AACC-C456C7359ABF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HapticGloveConnectorTest", "HapticGloveConnectorTest\HapticGloveConnectorTest.csproj", "{BC410DDF-C478-4AC1-BB49-C1DCFCC4EE2A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4254B6D0-6A00-44A0-AACC-C456C7359ABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4254B6D0-6A00-44A0-AACC-C456C7359ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4254B6D0-6A00-44A0-AACC-C456C7359ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4254B6D0-6A00-44A0-AACC-C456C7359ABF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC410DDF-C478-4AC1-BB49-C1DCFCC4EE2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC410DDF-C478-4AC1-BB49-C1DCFCC4EE2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC410DDF-C478-4AC1-BB49-C1DCFCC4EE2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC410DDF-C478-4AC1-BB49-C1DCFCC4EE2A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
