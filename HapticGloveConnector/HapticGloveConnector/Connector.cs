@@ -36,7 +36,7 @@ namespace HapticGloveConnector
 
         public static event Action<string> failed;
 
-        static Connector()
+       static void Connect()
         {
             using (var searcher = new ManagementObjectSearcher("SELECT * FROM WIN32_SerialPort"))
             {
@@ -44,20 +44,20 @@ namespace HapticGloveConnector
             }
             ports.ForEach(port =>
             {
-                new Thread(() =>
+                port.Open();
+                port.Write(new byte[] { 1 }, 0, 1);
+                ThreadPool.QueueUserWorkItem(x =>
+                {
+                    if ((byte)port.ReadLine().Last() == 1)
                     {
-                    port.Open();
-                    port.Write(new byte[] { 1 }, 0, 1);
-                    if (port.ReadByte() == 0)
-                    {
-                    leftGlove = port;
+                        rightGlove = port;
                     }
                     else
                     {
-                    rightGlove = port;
+                        leftGlove = port;
                     }
-                    });
-            }); // request info about which hand the port represents
+                });
+            });
         }
 
         public static bool send(Hand hand, Finger finger, bool vibrate)
@@ -70,26 +70,28 @@ namespace HapticGloveConnector
                 if (hand == Hand.Right)
                 {
                     rightState = outgoing;
-                    failure(rightGlove);
+                    failure(rightGlove, "right");
                     rightGlove?.Write(new byte[] { outgoing }, 0, 1);
-                } else
+                }
+                else
                 {
                     leftState = outgoing;
-                    failure(leftGlove);
-                    leftGlove?.Write(new byte[] { outgoing}, 0, 1);
+                    failure(leftGlove, "left");
+                    leftGlove?.Write(new byte[] { outgoing }, 0, 1);
                 }
                 return true;
-            } catch
+            }
+            catch
             {
                 return false;
             }
         }
 
-        private static void failure(SerialPort port)
+        private static void failure(SerialPort port, string glove)
         {
             if (port == null && failed != null)
             {
-                failed("Connection to glove could not be established.");
+                failed(String.Format("Connection to {0} glove could not be established. Try to connect again.", glove));
             }
         }
 
