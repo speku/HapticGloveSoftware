@@ -14,13 +14,6 @@ namespace HapticGloveConnectorTest
     {
         static void Main(string[] args)
         {
-            //HapticGloveConnector.Connector.failed += x => Console.WriteLine(x);
-            for (;;)
-            {
-                Thread.Sleep(2000);
-                HapticGloveConnector.Connector.send(HapticGloveConnector.Hand.Right, HapticGloveConnector.Finger.Middle, true);
-            }
-
             Console.ReadKey();
         }
     }

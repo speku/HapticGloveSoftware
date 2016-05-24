@@ -60,7 +60,7 @@ namespace HapticGloveConnector
             });
         }
 
-        public static bool send(Hand hand, Finger finger, bool vibrate)
+        public static bool Vibrate(Hand hand, Finger finger, bool vibrate)
         {
             byte outgoing = (hand == Hand.Right ? rightState : leftState);
             byte mask = (byte)(1 << (byte)finger);
@@ -70,13 +70,13 @@ namespace HapticGloveConnector
                 if (hand == Hand.Right)
                 {
                     rightState = outgoing;
-                    failure(rightGlove, "right");
+                    Failure(rightGlove, "right");
                     rightGlove?.Write(new byte[] { outgoing }, 0, 1);
                 }
                 else
                 {
                     leftState = outgoing;
-                    failure(leftGlove, "left");
+                    Failure(leftGlove, "left");
                     leftGlove?.Write(new byte[] { outgoing }, 0, 1);
                 }
                 return true;
@@ -87,7 +87,7 @@ namespace HapticGloveConnector
             }
         }
 
-        private static void failure(SerialPort port, string glove)
+        private static void Failure(SerialPort port, string glove)
         {
             if (port == null && failed != null)
             {
@@ -101,10 +101,13 @@ namespace HapticGloveConnector
         }
 
 
-
-
-
-
+        public static void Intensity(Hand hand, Finger finger, int intensity)
+        {
+            var glove = hand == Hand.Left ? leftGlove : rightGlove;
+            Failure(glove, "");
+            byte outgoing = (byte)(((byte)(intensity % 32) << (byte)3) | (byte)(finger + 1));
+            glove?.Write(new byte[] { outgoing }, 0, 1);
+        }
 
     }
 }
