@@ -7,6 +7,15 @@ using System.IO;
 using System.IO.Ports;
 using System.Management;
 using System.Threading;
+using Windows.Devices.Enumeration;
+using Windows.Devices;
+using System.Runtime;
+using Windows.Devices.Bluetooth;
+using Windows.Devices.Bluetooth.GenericAttributeProfile;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Storage.Streams;
+
+
 
 namespace HapticGloveConnector
 {
@@ -14,7 +23,8 @@ namespace HapticGloveConnector
     public enum Hand
     {
         Right,
-        Left
+        Left,
+        None
     }
 
     public enum Finger
@@ -28,85 +38,51 @@ namespace HapticGloveConnector
 
     public static class Connector
     {
-        private static string mcu = "Adafruit Flora";
-        private static SerialPort leftGlove, rightGlove;
-        private static List<SerialPort> ports;
-        private static byte leftState, rightState;
-        private static int baudRate = 9600;
 
-        public static event Action<string> failed;
+        public static event Action<string> Failure;
+        private static List<Glove> gloves;
+        private static int timeout = 0;
 
-       static void Connect()
+        public static async void  Connect(int timeout = 0)
         {
-            using (var searcher = new ManagementObjectSearcher("SELECT * FROM WIN32_SerialPort"))
-            {
-                ports = searcher.Get().Cast<ManagementBaseObject>().Where(mo => mo["Caption"].ToString().Contains(mcu)).Select(mo => new SerialPort(mo["DeviceID"].ToString(), baudRate)).ToList();
-            }
-            ports.ForEach(port =>
-            {
-                port.Open();
-                port.Write(new byte[] { 1 }, 0, 1);
-                ThreadPool.QueueUserWorkItem(x =>
-                {
-                    if ((byte)port.ReadLine().Last() == 1)
-                    {
-                        rightGlove = port;
-                    }
-                    else
-                    {
-                        leftGlove = port;
-                    }
-                });
-            });
+            Connector.timeout = timeout;
+            var info = await DeviceInformation.FindAllAsync(GattDeviceService.GetDeviceSelectorFromUuid(new Guid("6E400001-B5A3-F393-E0A9-E50E24DCCA9E")));
+            gloves = info.Select(async x => await GattDeviceService.FromIdAsync(x.Id)).Select(s => new Glove(s.Result.GetCharacteristics(new Guid("6E400003-B5A3-F393-E0A9-E50E24DCCA9E")).FirstOrDefault(), s.Result.GetCharacteristics(new Guid("6E400002-B5A3-F393-E0A9-E50E24DCCA9E")).FirstOrDefault())).ToList();
         }
 
-        public static bool Vibrate(Hand hand, Finger finger, bool vibrate)
+        class Glove
         {
-            byte outgoing = (hand == Hand.Right ? rightState : leftState);
-            byte mask = (byte)(1 << (byte)finger);
-            outgoing = (byte)(vibrate ? outgoing | mask : outgoing & ~mask);
-            try
+            AutoResetEvent initialized = new AutoResetEvent(false);
+            public Hand hand;
+            public Action<Finger, byte> Intensity;
+
+            public Glove(GattCharacteristic reader, GattCharacteristic writer)
             {
-                if (hand == Hand.Right)
-                {
-                    rightState = outgoing;
-                    Failure(rightGlove, "right");
-                    rightGlove?.Write(new byte[] { outgoing }, 0, 1);
-                }
-                else
-                {
-                    leftState = outgoing;
-                    Failure(leftGlove, "left");
-                    leftGlove?.Write(new byte[] { outgoing }, 0, 1);
-                }
-                return true;
-            }
-            catch
-            {
-                return false;
+                hand = Hand.None;
+                Action<byte> Write =  x => writer?.WriteValueAsync((new byte[] { x }).AsBuffer());
+                Intensity = (finger, intensity) => Write((byte)(intensity % 32 << 3 | (byte)(finger + 1)));
+                if (reader == null || writer == null) { Failure?.Invoke("Could not create a reader/writer for a glove."); return; }
+                Action fun = (async () =>  await reader.WriteClientCharacteristicConfigurationDescriptorAsync(GattClientCharacteristicConfigurationDescriptorValue.Notify));
+                fun();
+                reader.ValueChanged += (x, args) => { hand = args.CharacteristicValue.GetByte(0) == 0 ? Hand.Left : Hand.Right; initialized.Set(); };
+                Write(0);
+                if (!initialized.WaitOne(timeout)) Failure?.Invoke("Response from glove not received within " + timeout + " ms. Try reconnecting!");
             }
         }
 
-        private static void Failure(SerialPort port, string glove)
+
+        public static void Intensity(Hand hand, Finger finger, byte intensity)
         {
-            if (port == null && failed != null)
+            var foundGloves = gloves.Where(x => x.hand == hand);
+            if (foundGloves.Count() > 0)
             {
-                failed(String.Format("Connection to {0} glove could not be established. Try to connect again.", glove));
+                foundGloves.First().Intensity(finger, intensity);
+            } else
+            {
+                Failure?.Invoke("Glove for " + hand.ToString().ToLower() + " hand not found");
             }
-        }
 
-        public static void Exit()
-        {
-            ports.ForEach(p => p.Close());
-        }
-
-
-        public static void Intensity(Hand hand, Finger finger, int intensity)
-        {
-            var glove = hand == Hand.Left ? leftGlove : rightGlove;
-            Failure(glove, "");
-            byte outgoing = (byte)(((byte)(intensity % 32) << (byte)3) | (byte)(finger + 1));
-            glove?.Write(new byte[] { outgoing }, 0, 1);
+   
         }
 
     }
