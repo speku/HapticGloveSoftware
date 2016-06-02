@@ -1,19 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.IO.Ports;
-using System.Management;
 using System.Threading;
 using Windows.Devices.Enumeration;
-using Windows.Devices;
-using System.Runtime;
-using Windows.Devices.Bluetooth;
 using Windows.Devices.Bluetooth.GenericAttributeProfile;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Storage.Streams;
 
 
 
@@ -41,7 +32,7 @@ namespace HapticGloveConnector
 
         public static event Action<string> Failure;
         private static List<Glove> gloves;
-        private static int timeout = 0;
+        private static int timeout = 500;
 
         public static async void  Connect(int timeout = 0)
         {
