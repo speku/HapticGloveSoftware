@@ -14,6 +14,7 @@ using Windows.Devices.Bluetooth;
 using Windows.Devices.Bluetooth.GenericAttributeProfile;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Storage.Streams;
+using HapticGloveConnector;
 
 namespace HapticGloveConnectorTest
 {
@@ -23,10 +24,10 @@ namespace HapticGloveConnectorTest
         static void Main(string[] args)
         {
 
-            HapticGloveConnector.Connector.Connect();
+            Connector.Connect();
             for (int i = 0; i < 256; i++)
             {
-                HapticGloveConnector.Connector.Intensity(HapticGloveConnector.Hand.Right, HapticGloveConnector.Finger.Thumb, (byte)i);
+                Connector.Intensity(Hand.Right, Finger.Thumb, (byte)i);
                 Thread.Sleep(1000);
             }
 
