@@ -31,7 +31,8 @@ namespace HapticGloveConnector
     {
 
         public static event Action<string> Failure;
-        private static List<Glove> gloves;
+        public static event Action<Hand> Success;
+        private static List<Glove> gloves = new List<Glove>();
         private static int timeout = 500;
 
         public static async void  Connect(int timeout = 0)
@@ -55,9 +56,10 @@ namespace HapticGloveConnector
                 if (reader == null || writer == null) { Failure?.Invoke("Could not create a reader/writer for a glove."); return; }
                 Action fun = (async () =>  await reader.WriteClientCharacteristicConfigurationDescriptorAsync(GattClientCharacteristicConfigurationDescriptorValue.Notify));
                 fun();
-                reader.ValueChanged += (x, args) => { hand = args.CharacteristicValue.GetByte(0) == 0 ? Hand.Left : Hand.Right; initialized.Set(); };
+                reader.ValueChanged += (x, args) => { hand = args.CharacteristicValue.GetByte(0) == 0 ? Hand.Left : Hand.Right; initialized.Set(); Success?.Invoke(hand); };
                 Write(0);
-                if (!initialized.WaitOne(timeout)) Failure?.Invoke("Response from glove not received within " + timeout + " ms. Try reconnecting!");
+                if (!initialized.WaitOne(timeout)) Failure?.Invoke("Response from glove not received within " + timeout + " ms. Try reconncting!");
+
             }
         }
 
@@ -70,7 +72,7 @@ namespace HapticGloveConnector
                 foundGloves.First().Intensity(finger, intensity);
             } else
             {
-                Failure?.Invoke("Glove for " + hand.ToString().ToLower() + " hand not found");
+                Failure?.Invoke("Glove for " + hand.ToString().ToLower() + " hand not found. Try reconncting!");
             }
 
    

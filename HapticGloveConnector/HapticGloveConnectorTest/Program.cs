@@ -23,16 +23,27 @@ namespace HapticGloveConnectorTest
 
         static void Main(string[] args)
         {
-
+            byte value = 0;
+            int sleep = 5;
             Connector.Connect();
-            for (int i = 0; i < 256; i++)
-            {
-                Connector.Intensity(Hand.Right, Finger.Thumb, (byte)i);
-                Thread.Sleep(1000);
-            }
+            Thread.Sleep(3000);
+            Connector.Intensity(Hand.Right, Finger.Thumb, value);
+            Thread.Sleep(sleep);
+            Connector.Intensity(Hand.Right, Finger.Index, value);
+            Thread.Sleep(sleep);
+            Connector.Intensity(Hand.Right, Finger.Middle, value);
+            Thread.Sleep(sleep);
+            Connector.Intensity(Hand.Right, Finger.Ring, value);
+            Thread.Sleep(sleep);
+            Connector.Intensity(Hand.Right, Finger.Pinky, value);
+            //for (int i = 0; i < 256; i++)
+            //{
+            //    Connector.Intensity(Hand.Right, Finger.Thumb, (byte)i);
+            //    Thread.Sleep(1000);
+            //}
 
 
-            //Init();
+            ////Init();
             Console.ReadKey();
         }
 

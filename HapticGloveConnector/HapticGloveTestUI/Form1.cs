@@ -8,16 +8,47 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HapticGloveConnector;
+using System.IO;
+using System.IO.Ports;
+using System.Management;
+using System.Threading;
 
 
 namespace HapticGloveTestUI
 {
     public partial class Form1 : Form
     {
+        List<SerialPort> ports = new List<SerialPort>();
+
         public Form1()
         {
             InitializeComponent();
-            Connector.Failure += message => log.AppendText(message);
+            Connector.Failure += message => { InvokeControl(log, () => log.AppendText(Environment.NewLine + DateTime.Now + ": " + message)); var panel = message.ToLower().Contains("right") ? rightHandPanel : lefthandPanel; InvokeControl(panel, () => panel.BackColor = Color.Red); };
+            Connector.Success += hand => { var panel = hand == Hand.Right ? rightHandPanel : lefthandPanel; InvokeControl(panel, () => panel.BackColor = Color.Green); InvokeControl(log, () => log.AppendText(Environment.NewLine + DateTime.Now + ": Connected to " + hand.ToString() + " glove.")); };
+
+            foreach (Control c in new Control[] { rightHandPanel, lefthandPanel})
+            {
+                foreach (Control _c in c.Controls)
+                {
+                    if (_c.GetType() == typeof(TrackBar))
+                    {
+                        var tip = new ToolTip();
+                        var bar = (TrackBar)_c;
+                        bar.ValueChanged += (s,args) => tip.SetToolTip(bar, bar.Value.ToString());
+                    }
+                }
+            }
+        }
+
+        private void InvokeControl(Control control, Action action)
+        {
+            if (control.InvokeRequired)
+            {
+                control.Invoke(action);
+            } else
+            {
+                action();
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -42,7 +73,10 @@ namespace HapticGloveTestUI
 
         private void button11_Click(object sender, EventArgs e)
         {
-
+            ThreadPool.QueueUserWorkItem(y =>
+            {
+                Connector.Connect(1000);
+            });
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -115,4 +149,11 @@ namespace HapticGloveTestUI
 
         }
     }
+
+
+
 }
+
+
+
+

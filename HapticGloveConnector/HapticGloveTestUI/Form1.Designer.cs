@@ -30,7 +30,7 @@
         {
             this.thumbLeft = new System.Windows.Forms.Button();
             this.indexLeft = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.lefthandPanel = new System.Windows.Forms.Panel();
             this.trackBarLeftThumb = new System.Windows.Forms.TrackBar();
             this.trackBarLeftIndex = new System.Windows.Forms.TrackBar();
             this.trackBarLeftMiddle = new System.Windows.Forms.TrackBar();
@@ -42,7 +42,7 @@
             this.middleLeft = new System.Windows.Forms.Button();
             this.connect = new System.Windows.Forms.Button();
             this.log = new System.Windows.Forms.TextBox();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.rightHandPanel = new System.Windows.Forms.Panel();
             this.trackBarRightThumb = new System.Windows.Forms.TrackBar();
             this.trackBarRightIndex = new System.Windows.Forms.TrackBar();
             this.trackBarRightMiddle = new System.Windows.Forms.TrackBar();
@@ -54,13 +54,13 @@
             this.middleRight = new System.Windows.Forms.Button();
             this.thumbRight = new System.Windows.Forms.Button();
             this.indexRight = new System.Windows.Forms.Button();
-            this.panel1.SuspendLayout();
+            this.lefthandPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLeftThumb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLeftIndex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLeftMiddle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLeftRing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLeftPinky)).BeginInit();
-            this.panel2.SuspendLayout();
+            this.rightHandPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarRightThumb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarRightIndex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarRightMiddle)).BeginInit();
@@ -88,23 +88,24 @@
             this.indexLeft.UseVisualStyleBackColor = true;
             this.indexLeft.Click += new System.EventHandler(this.button2_Click);
             // 
-            // panel1
+            // lefthandPanel
             // 
-            this.panel1.Controls.Add(this.trackBarLeftThumb);
-            this.panel1.Controls.Add(this.trackBarLeftIndex);
-            this.panel1.Controls.Add(this.trackBarLeftMiddle);
-            this.panel1.Controls.Add(this.trackBarLeftRing);
-            this.panel1.Controls.Add(this.trackBarLeftPinky);
-            this.panel1.Controls.Add(this.leftHandLabel);
-            this.panel1.Controls.Add(this.pinkyLeft);
-            this.panel1.Controls.Add(this.ringLeft);
-            this.panel1.Controls.Add(this.middleLeft);
-            this.panel1.Controls.Add(this.thumbLeft);
-            this.panel1.Controls.Add(this.indexLeft);
-            this.panel1.Location = new System.Drawing.Point(36, 57);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(264, 427);
-            this.panel1.TabIndex = 2;
+            this.lefthandPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lefthandPanel.Controls.Add(this.trackBarLeftThumb);
+            this.lefthandPanel.Controls.Add(this.trackBarLeftIndex);
+            this.lefthandPanel.Controls.Add(this.trackBarLeftMiddle);
+            this.lefthandPanel.Controls.Add(this.trackBarLeftRing);
+            this.lefthandPanel.Controls.Add(this.trackBarLeftPinky);
+            this.lefthandPanel.Controls.Add(this.leftHandLabel);
+            this.lefthandPanel.Controls.Add(this.pinkyLeft);
+            this.lefthandPanel.Controls.Add(this.ringLeft);
+            this.lefthandPanel.Controls.Add(this.middleLeft);
+            this.lefthandPanel.Controls.Add(this.thumbLeft);
+            this.lefthandPanel.Controls.Add(this.indexLeft);
+            this.lefthandPanel.Location = new System.Drawing.Point(36, 57);
+            this.lefthandPanel.Name = "lefthandPanel";
+            this.lefthandPanel.Size = new System.Drawing.Size(264, 427);
+            this.lefthandPanel.TabIndex = 2;
             // 
             // trackBarLeftThumb
             // 
@@ -113,6 +114,7 @@
             this.trackBarLeftThumb.Name = "trackBarLeftThumb";
             this.trackBarLeftThumb.Size = new System.Drawing.Size(93, 45);
             this.trackBarLeftThumb.TabIndex = 10;
+            this.trackBarLeftThumb.TickFrequency = 0;
             // 
             // trackBarLeftIndex
             // 
@@ -121,6 +123,7 @@
             this.trackBarLeftIndex.Name = "trackBarLeftIndex";
             this.trackBarLeftIndex.Size = new System.Drawing.Size(93, 45);
             this.trackBarLeftIndex.TabIndex = 9;
+            this.trackBarLeftIndex.TickFrequency = 0;
             // 
             // trackBarLeftMiddle
             // 
@@ -129,6 +132,7 @@
             this.trackBarLeftMiddle.Name = "trackBarLeftMiddle";
             this.trackBarLeftMiddle.Size = new System.Drawing.Size(93, 45);
             this.trackBarLeftMiddle.TabIndex = 8;
+            this.trackBarLeftMiddle.TickFrequency = 0;
             // 
             // trackBarLeftRing
             // 
@@ -137,6 +141,7 @@
             this.trackBarLeftRing.Name = "trackBarLeftRing";
             this.trackBarLeftRing.Size = new System.Drawing.Size(93, 45);
             this.trackBarLeftRing.TabIndex = 7;
+            this.trackBarLeftRing.TickFrequency = 0;
             // 
             // trackBarLeftPinky
             // 
@@ -145,6 +150,7 @@
             this.trackBarLeftPinky.Name = "trackBarLeftPinky";
             this.trackBarLeftPinky.Size = new System.Drawing.Size(93, 45);
             this.trackBarLeftPinky.TabIndex = 6;
+            this.trackBarLeftPinky.TickFrequency = 0;
             // 
             // leftHandLabel
             // 
@@ -201,27 +207,29 @@
             this.log.Location = new System.Drawing.Point(36, 572);
             this.log.Multiline = true;
             this.log.Name = "log";
+            this.log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.log.Size = new System.Drawing.Size(590, 164);
             this.log.TabIndex = 7;
             this.log.TextChanged += new System.EventHandler(this.log_TextChanged);
             // 
-            // panel2
+            // rightHandPanel
             // 
-            this.panel2.Controls.Add(this.trackBarRightThumb);
-            this.panel2.Controls.Add(this.trackBarRightIndex);
-            this.panel2.Controls.Add(this.trackBarRightMiddle);
-            this.panel2.Controls.Add(this.trackBarRightRing);
-            this.panel2.Controls.Add(this.trackBarRightPinky);
-            this.panel2.Controls.Add(this.rightHandLabel);
-            this.panel2.Controls.Add(this.pinkyRight);
-            this.panel2.Controls.Add(this.ringRight);
-            this.panel2.Controls.Add(this.middleRight);
-            this.panel2.Controls.Add(this.thumbRight);
-            this.panel2.Controls.Add(this.indexRight);
-            this.panel2.Location = new System.Drawing.Point(362, 57);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(264, 427);
-            this.panel2.TabIndex = 8;
+            this.rightHandPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rightHandPanel.Controls.Add(this.trackBarRightThumb);
+            this.rightHandPanel.Controls.Add(this.trackBarRightIndex);
+            this.rightHandPanel.Controls.Add(this.trackBarRightMiddle);
+            this.rightHandPanel.Controls.Add(this.trackBarRightRing);
+            this.rightHandPanel.Controls.Add(this.trackBarRightPinky);
+            this.rightHandPanel.Controls.Add(this.rightHandLabel);
+            this.rightHandPanel.Controls.Add(this.pinkyRight);
+            this.rightHandPanel.Controls.Add(this.ringRight);
+            this.rightHandPanel.Controls.Add(this.middleRight);
+            this.rightHandPanel.Controls.Add(this.thumbRight);
+            this.rightHandPanel.Controls.Add(this.indexRight);
+            this.rightHandPanel.Location = new System.Drawing.Point(362, 57);
+            this.rightHandPanel.Name = "rightHandPanel";
+            this.rightHandPanel.Size = new System.Drawing.Size(264, 427);
+            this.rightHandPanel.TabIndex = 8;
             // 
             // trackBarRightThumb
             // 
@@ -230,6 +238,7 @@
             this.trackBarRightThumb.Name = "trackBarRightThumb";
             this.trackBarRightThumb.Size = new System.Drawing.Size(93, 45);
             this.trackBarRightThumb.TabIndex = 10;
+            this.trackBarRightThumb.TickFrequency = 0;
             // 
             // trackBarRightIndex
             // 
@@ -238,6 +247,7 @@
             this.trackBarRightIndex.Name = "trackBarRightIndex";
             this.trackBarRightIndex.Size = new System.Drawing.Size(93, 45);
             this.trackBarRightIndex.TabIndex = 9;
+            this.trackBarRightIndex.TickFrequency = 0;
             // 
             // trackBarRightMiddle
             // 
@@ -246,6 +256,7 @@
             this.trackBarRightMiddle.Name = "trackBarRightMiddle";
             this.trackBarRightMiddle.Size = new System.Drawing.Size(93, 45);
             this.trackBarRightMiddle.TabIndex = 8;
+            this.trackBarRightMiddle.TickFrequency = 0;
             // 
             // trackBarRightRing
             // 
@@ -254,6 +265,7 @@
             this.trackBarRightRing.Name = "trackBarRightRing";
             this.trackBarRightRing.Size = new System.Drawing.Size(93, 45);
             this.trackBarRightRing.TabIndex = 7;
+            this.trackBarRightRing.TickFrequency = 0;
             // 
             // trackBarRightPinky
             // 
@@ -262,6 +274,7 @@
             this.trackBarRightPinky.Name = "trackBarRightPinky";
             this.trackBarRightPinky.Size = new System.Drawing.Size(93, 45);
             this.trackBarRightPinky.TabIndex = 6;
+            this.trackBarRightPinky.TickFrequency = 0;
             // 
             // rightHandLabel
             // 
@@ -328,21 +341,21 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(663, 748);
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.rightHandPanel);
             this.Controls.Add(this.log);
             this.Controls.Add(this.connect);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.lefthandPanel);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.lefthandPanel.ResumeLayout(false);
+            this.lefthandPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLeftThumb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLeftIndex)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLeftMiddle)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLeftRing)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLeftPinky)).EndInit();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.rightHandPanel.ResumeLayout(false);
+            this.rightHandPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarRightThumb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarRightIndex)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarRightMiddle)).EndInit();
@@ -357,7 +370,7 @@
 
         private System.Windows.Forms.Button thumbLeft;
         private System.Windows.Forms.Button indexLeft;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel lefthandPanel;
         private System.Windows.Forms.Button middleLeft;
         private System.Windows.Forms.Label leftHandLabel;
         private System.Windows.Forms.Button pinkyLeft;
@@ -369,7 +382,7 @@
         private System.Windows.Forms.TrackBar trackBarLeftMiddle;
         private System.Windows.Forms.TrackBar trackBarLeftRing;
         private System.Windows.Forms.TrackBar trackBarLeftPinky;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel rightHandPanel;
         private System.Windows.Forms.TrackBar trackBarRightThumb;
         private System.Windows.Forms.TrackBar trackBarRightIndex;
         private System.Windows.Forms.TrackBar trackBarRightMiddle;
