@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using HapticGloveConnector;
 using System.IO;
+using System.IO.Pipes;
 using System.IO.Ports;
 using System.Management;
 using System.Threading;
@@ -18,13 +19,32 @@ namespace HapticGloveTestUI
 {
     public partial class Form1 : Form
     {
-        List<SerialPort> ports = new List<SerialPort>();
+
+        event Action<string> ClientConnected;
 
         public Form1()
         {
             InitializeComponent();
-            Connector.Failure += message => { InvokeControl(log, () => log.AppendText(Environment.NewLine + DateTime.Now + ": " + message)); var panel = message.ToLower().Contains("right") ? rightHandPanel : lefthandPanel; InvokeControl(panel, () => panel.BackColor = Color.Red); };
-            Connector.Success += hand => { var panel = hand == Hand.Right ? rightHandPanel : lefthandPanel; InvokeControl(panel, () => panel.BackColor = Color.Green); InvokeControl(log, () => log.AppendText(Environment.NewLine + DateTime.Now + ": Connected to " + hand.ToString() + " glove.")); };
+            Text = "Haptic Glove Utility";
+
+            Connector.Failure += message => { Log(message); var panel = message.ToLower().Contains("right") ? rightHandPanel : lefthandPanel; InvokeControl(panel, () => panel.BackColor = Color.Red); };
+            Connector.Success += hand => { var panel = hand == Hand.Right ? rightHandPanel : lefthandPanel; InvokeControl(panel, () => panel.BackColor = Color.Green); Log("Connected to " + hand.ToString() + " glove."); };
+
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                var strToFinger = new Dictionary<string, Finger>() { { "index", Finger.Index}, {"middle", Finger.Middle }, {"thumb", Finger.Thumb }, {"ring", Finger.Ring }, {"pinky", Finger.Pinky } };
+                var server = new NamedPipeServerStream("HapticGlovePipe");
+                server.WaitForConnection();
+                var reader = new StreamReader(server);
+                for (;;)
+                {
+                    var args = reader.ReadLine().Split(' ');
+                    Log("client request: set intensity of " + args[1] + " finger of " + args[0] + " hand to " + args[2]);
+                    Connector.Intensity(args[0] == "right" ? Hand.Right : Hand.Left, strToFinger[args[1]], byte.Parse(args[2]));
+                }
+            });
+          
+
 
             foreach (Control c in new Control[] { rightHandPanel, lefthandPanel})
             {
@@ -38,6 +58,12 @@ namespace HapticGloveTestUI
                     }
                 }
             }
+        }
+
+
+        private void Log(string message)
+        {
+            InvokeControl(log, () => log.AppendText(Environment.NewLine + DateTime.Now + ": " + message));
         }
 
         private void InvokeControl(Control control, Action action)
@@ -147,6 +173,11 @@ namespace HapticGloveTestUI
         private void log_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            
         }
     }
 

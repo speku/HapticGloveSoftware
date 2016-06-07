@@ -194,7 +194,7 @@
             // 
             // connect
             // 
-            this.connect.Location = new System.Drawing.Point(269, 503);
+            this.connect.Location = new System.Drawing.Point(269, 508);
             this.connect.Name = "connect";
             this.connect.Size = new System.Drawing.Size(112, 47);
             this.connect.TabIndex = 6;
