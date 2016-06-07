@@ -5,27 +5,12 @@ using System.Threading;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Bluetooth.GenericAttributeProfile;
 using System.Runtime.InteropServices.WindowsRuntime;
+using HapticGloveShared;
 
 
 
 namespace HapticGloveConnector
 {
-
-    public enum Hand
-    {
-        Right,
-        Left,
-        None
-    }
-
-    public enum Finger
-    {
-        Thumb,
-        Index,
-        Middle,
-        Ring,
-        Pinky
-    }
 
     public static class Connector
     {

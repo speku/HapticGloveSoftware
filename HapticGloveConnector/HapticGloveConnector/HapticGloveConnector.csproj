@@ -51,6 +51,12 @@
     <Compile Include="Connector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HapticGloveShared\HapticGloveShared.csproj">
+      <Project>{c468b320-6857-4f43-9928-4a3c80e31c65}</Project>
+      <Name>HapticGloveShared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

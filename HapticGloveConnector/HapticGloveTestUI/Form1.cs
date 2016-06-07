@@ -12,6 +12,9 @@ using System.IO;
 using System.IO.Ports;
 using System.Management;
 using System.Threading;
+using HapticGloveShared;
+using NamedPipeWrapper.IO;
+using NamedPipeWrapper;
 
 
 namespace HapticGloveTestUI
@@ -19,12 +22,21 @@ namespace HapticGloveTestUI
     public partial class Form1 : Form
     {
         List<SerialPort> ports = new List<SerialPort>();
+        NamedPipeServer<HapticGloveMessage> server = new NamedPipeServer<HapticGloveMessage>(HapticGloveMessage.pipeName);
+        NamedPipeConnection<HapticGloveMessage, HapticGloveMessage> connection;
 
         public Form1()
         {
             InitializeComponent();
-            Connector.Failure += message => { InvokeControl(log, () => log.AppendText(Environment.NewLine + DateTime.Now + ": " + message)); var panel = message.ToLower().Contains("right") ? rightHandPanel : lefthandPanel; InvokeControl(panel, () => panel.BackColor = Color.Red); };
-            Connector.Success += hand => { var panel = hand == Hand.Right ? rightHandPanel : lefthandPanel; InvokeControl(panel, () => panel.BackColor = Color.Green); InvokeControl(log, () => log.AppendText(Environment.NewLine + DateTime.Now + ": Connected to " + hand.ToString() + " glove.")); };
+            Text = "Haptic Glove Utility";
+
+            Connector.Failure += message => { Log(message); var panel = message.ToLower().Contains("right") ? rightHandPanel : lefthandPanel; InvokeControl(panel, () => panel.BackColor = Color.Red); };
+            Connector.Success += hand => { var panel = hand == Hand.Right ? rightHandPanel : lefthandPanel; InvokeControl(panel, () => panel.BackColor = Color.Green); Log("Connected to " + hand.ToString() + " glove."); };
+
+            server.ClientConnected += (conn) => { connection = conn; Log("Connection to client established."); };
+            server.ClientDisconnected += (conn) => Log("Client disconnected.");
+            server.ClientMessage += (conn, message) => Connector.Intensity(message.hand, message.finger, message.intensity);
+
 
             foreach (Control c in new Control[] { rightHandPanel, lefthandPanel})
             {
@@ -38,6 +50,11 @@ namespace HapticGloveTestUI
                     }
                 }
             }
+        }
+
+        private void Log(string message)
+        {
+            InvokeControl(log, () => log.AppendText(Environment.NewLine + DateTime.Now + ": " + message));
         }
 
         private void InvokeControl(Control control, Action action)
@@ -71,13 +88,6 @@ namespace HapticGloveTestUI
 
         }
 
-        private void button11_Click(object sender, EventArgs e)
-        {
-            ThreadPool.QueueUserWorkItem(y =>
-            {
-                Connector.Connect(1000);
-            });
-        }
 
         private void button6_Click(object sender, EventArgs e)
         {
@@ -147,6 +157,14 @@ namespace HapticGloveTestUI
         private void log_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem(y =>
+            {
+                Connector.Connect(1000);
+            });
         }
     }
 

@@ -40,7 +40,6 @@
             this.pinkyLeft = new System.Windows.Forms.Button();
             this.ringLeft = new System.Windows.Forms.Button();
             this.middleLeft = new System.Windows.Forms.Button();
-            this.connect = new System.Windows.Forms.Button();
             this.log = new System.Windows.Forms.TextBox();
             this.rightHandPanel = new System.Windows.Forms.Panel();
             this.trackBarRightThumb = new System.Windows.Forms.TrackBar();
@@ -54,6 +53,7 @@
             this.middleRight = new System.Windows.Forms.Button();
             this.thumbRight = new System.Windows.Forms.Button();
             this.indexRight = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.lefthandPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLeftThumb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLeftIndex)).BeginInit();
@@ -192,16 +192,6 @@
             this.middleLeft.UseVisualStyleBackColor = true;
             this.middleLeft.Click += new System.EventHandler(this.button3_Click);
             // 
-            // connect
-            // 
-            this.connect.Location = new System.Drawing.Point(269, 503);
-            this.connect.Name = "connect";
-            this.connect.Size = new System.Drawing.Size(112, 47);
-            this.connect.TabIndex = 6;
-            this.connect.Text = "connect";
-            this.connect.UseVisualStyleBackColor = true;
-            this.connect.Click += new System.EventHandler(this.button11_Click);
-            // 
             // log
             // 
             this.log.Location = new System.Drawing.Point(36, 572);
@@ -336,14 +326,24 @@
             this.indexRight.UseVisualStyleBackColor = true;
             this.indexRight.Click += new System.EventHandler(this.indexRight_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(277, 508);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(112, 47);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "connect to gloves";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(663, 748);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.rightHandPanel);
             this.Controls.Add(this.log);
-            this.Controls.Add(this.connect);
             this.Controls.Add(this.lefthandPanel);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -375,7 +375,6 @@
         private System.Windows.Forms.Label leftHandLabel;
         private System.Windows.Forms.Button pinkyLeft;
         private System.Windows.Forms.Button ringLeft;
-        private System.Windows.Forms.Button connect;
         private System.Windows.Forms.TextBox log;
         private System.Windows.Forms.TrackBar trackBarLeftThumb;
         private System.Windows.Forms.TrackBar trackBarLeftIndex;
@@ -394,6 +393,7 @@
         private System.Windows.Forms.Button middleRight;
         private System.Windows.Forms.Button thumbRight;
         private System.Windows.Forms.Button indexRight;
+        private System.Windows.Forms.Button button1;
     }
 }
 
