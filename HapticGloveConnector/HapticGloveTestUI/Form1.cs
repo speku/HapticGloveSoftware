@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using HapticGloveConnector;
-using System.IO;
-using System.IO.Ports;
-using System.Management;
 using System.Threading;
 
 
@@ -18,11 +9,12 @@ namespace HapticGloveTestUI
 {
     public partial class Form1 : Form
     {
-        List<SerialPort> ports = new List<SerialPort>();
 
         public Form1()
         {
             InitializeComponent();
+            Text = "Haptic Glove Utility";
+
             Connector.Failure += message => { InvokeControl(log, () => log.AppendText(Environment.NewLine + DateTime.Now + ": " + message)); var panel = message.ToLower().Contains("right") ? rightHandPanel : lefthandPanel; InvokeControl(panel, () => panel.BackColor = Color.Red); };
             Connector.Success += hand => { var panel = hand == Hand.Right ? rightHandPanel : lefthandPanel; InvokeControl(panel, () => panel.BackColor = Color.Green); InvokeControl(log, () => log.AppendText(Environment.NewLine + DateTime.Now + ": Connected to " + hand.ToString() + " glove.")); };
 

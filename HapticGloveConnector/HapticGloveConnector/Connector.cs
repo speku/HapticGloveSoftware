@@ -5,6 +5,7 @@ using System.Threading;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Bluetooth.GenericAttributeProfile;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.IO.Pipes;
 
 
 
