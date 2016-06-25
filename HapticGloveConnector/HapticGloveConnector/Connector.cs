@@ -39,6 +39,7 @@ namespace HapticGloveConnector
         {
             Connector.timeout = timeout;
             var info = await DeviceInformation.FindAllAsync(GattDeviceService.GetDeviceSelectorFromUuid(new Guid("6E400001-B5A3-F393-E0A9-E50E24DCCA9E")));
+            if (info.Count() == 0) Failure?.Invoke("No glove detected!");
             gloves = info.Select(async x => await GattDeviceService.FromIdAsync(x.Id)).Select(s => new Glove(s.Result.GetCharacteristics(new Guid("6E400003-B5A3-F393-E0A9-E50E24DCCA9E")).FirstOrDefault(), s.Result.GetCharacteristics(new Guid("6E400002-B5A3-F393-E0A9-E50E24DCCA9E")).FirstOrDefault())).ToList();
         }
 
@@ -74,8 +75,6 @@ namespace HapticGloveConnector
             {
                 Failure?.Invoke("Glove for " + hand.ToString().ToLower() + " hand not found. Try reconncting!");
             }
-
-   
         }
 
     }

@@ -27,7 +27,7 @@ namespace HapticGloveTestUI
             InitializeComponent();
             Text = "Haptic Glove Utility";
 
-            Connector.Failure += message => { Log(message); var panel = message.ToLower().Contains("right") ? rightHandPanel : lefthandPanel; InvokeControl(panel, () => panel.BackColor = Color.Red); };
+            Connector.Failure += message => { Log(message); var panels = message.ToLower().Contains("right") ? new Panel[]{ rightHandPanel} : message.ToLower().Contains("left") ? new Panel[] { lefthandPanel} : new Panel[] { lefthandPanel, rightHandPanel}; panels.ToList().ForEach(p => InvokeControl(p, () => p.BackColor = Color.Red)); };
             Connector.Success += hand => { var panel = hand == Hand.Right ? rightHandPanel : lefthandPanel; InvokeControl(panel, () => panel.BackColor = Color.Green); Log("Connected to " + hand.ToString() + " glove."); };
 
             ThreadPool.QueueUserWorkItem(x =>
