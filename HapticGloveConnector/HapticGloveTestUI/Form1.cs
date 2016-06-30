@@ -38,9 +38,23 @@ namespace HapticGloveTestUI
                 var reader = new StreamReader(server);
                 for (;;)
                 {
-                    var args = reader.ReadLine().Split(' ');
-                    Log("client request: set intensity of " + args[1] + " finger of " + args[0] + " hand to " + args[2]);
-                    Connector.Intensity(args[0] == "right" ? Hand.Right : Hand.Left, strToFinger[args[1]], byte.Parse(args[2]));
+                    try
+                    {
+                        var args = reader.ReadLine().Split(' ');
+                        if (args[0] == "close")
+                        {
+                            server.Close();
+                            server.Dispose();
+                            Application.Exit();
+                            break;
+                        }
+                        else
+                        {
+                            Log("client request: set intensity of " + args[1] + " finger of " + args[0] + " hand to " + args[2]);
+                            Connector.Intensity(args[0] == "right" ? Hand.Right : Hand.Left, strToFinger[args[1]], byte.Parse(args[2]));
+                        }
+                    }
+                    catch { }
                 }
             });
           
